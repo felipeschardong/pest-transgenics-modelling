@@ -1,0 +1,67 @@
+# Importing libraries and packages
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Initial parameters
+alpha = 0.1  
+beta = 0.8   
+gamma = 0.5  
+initial_conditions = [0.9] 
+nit = 30  
+
+# Equation of recurrence relation for the resistant allele frequency
+def recurrence_relation(p, alpha, beta, gamma):
+    numerator = p**2 * (alpha - gamma) + p * gamma
+    denominator = p**2 * (alpha - 2 * gamma + beta) + 2 * p * (gamma - beta) + beta
+    return numerator / denominator
+
+# Initial plot setup
+plt.figure(figsize=(10, 6))
+
+# Plotting the recurrence relation curve
+p_vals = np.linspace(0, 1, 400)  # Range of allele frequencies
+f_vals = recurrence_relation(p_vals, alpha, beta, gamma)
+plt.plot(p_vals, f_vals, label=r'$f(p_{t})$', color='blue')
+
+# Plotting the identity line
+plt.plot(p_vals, p_vals, label=r'$y = p_{t}$', color='red', linestyle='--')
+
+# Iterative cobweb diagram
+for idx, pt_initial in enumerate(initial_conditions):
+    solx = [pt_initial]
+    pt = pt_initial
+    for _ in range(nit):
+        pt = recurrence_relation(pt, alpha, beta, gamma)
+        solx.append(pt)
+
+    # Cobweb steps
+    plt.plot([solx[0], solx[0]], [0, recurrence_relation(solx[0], alpha, beta, gamma)], color=f'C{idx}', lw=1)
+    plt.plot([solx[0], solx[1]], [solx[1], solx[1]], color=f'C{idx}', lw=1)
+
+    for t in range(1, len(solx) - 1):
+        plt.plot([solx[t], solx[t]], [solx[t], solx[t + 1]], color=f'C{idx}', lw=1) 
+        plt.plot([solx[t], solx[t + 1]], [solx[t + 1], solx[t + 1]], color=f'C{idx}', lw=1)  
+    plt.plot(solx[0], 0, 'o', label=rf'Initial point $p_0 = {pt_initial}$', markersize=8, color=f'C{idx}')
+
+# Configure plot labels and limits
+plt.xlabel(r'Frequency of the resistant allele in generation $t$ ($p_{t}$)', fontsize=11, fontweight='bold')
+plt.ylabel(r'Frequency of the resistant allele in generation $t+1$ $(p_{t+1})$', fontsize=11, fontweight='bold')
+plt.xlim(0, 1)
+plt.ylim(0, 1)
+
+# Style adjustments
+plt.gca().xaxis.set_tick_params(labelsize=11)
+plt.gca().yaxis.set_tick_params(labelsize=11)
+for label in plt.gca().get_xticklabels():
+    label.set_fontweight('bold')
+for label in plt.gca().get_yticklabels():
+    label.set_fontweight('bold')
+
+plt.legend(fontsize=13)
+
+# Saving the figure in the Downloads folder
+#download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'cobwebbing_method_caseI.png')
+#plt.savefig(download_path, dpi=300, bbox_inches='tight')
+
+plt.show()
