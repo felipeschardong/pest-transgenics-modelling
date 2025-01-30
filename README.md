@@ -1,1 +1,1 @@
-Explain what each folder contains and include instructions for running the codes.
+Explain what each folder contains or/and include instructions for running the codes?
