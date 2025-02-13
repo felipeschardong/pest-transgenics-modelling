@@ -1,8 +1,7 @@
 # Pest Transgenics Modelling
+ 
+ ## Time required for the allele conferring resistance to reach the frequency of 1/2 as a function of θ.
 
-| Text |
-|------|
-| _Time required for the allele conferring resistance to reach the frequency of $\frac{1}{2}$ as a function of $\theta$._ |
 
 ![Allele Frequency Time](images/resistant_allele_frequency_critical_time.png)
 
