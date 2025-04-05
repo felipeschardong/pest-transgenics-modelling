@@ -2,11 +2,11 @@
  
  ## Time required for the allele conferring resistance to reach the frequency of 1/2 as a function of θ.
 
-| Around Refuge | Refúgio em blocos |
+| Around Refuge | Block Refuge |
 |------------------|-------------------|
 | ![Animação torno](animations/animation_around.gif) | ![Animação bloco](animations/animation_block.gif) |
 
-| Refúgio em faixas | Refúgio aleatório |
+| Stripe Refuge | Random Refuge |
 |-------------------|-------------------|
 | ![Animação faixas](animations/animation_stripe.gif) | ![Animação aleatório](animations/animation_random.gif) |
 
