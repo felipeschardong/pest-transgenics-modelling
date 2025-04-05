@@ -1,6 +1,7 @@
 # Pest Transgenics Modelling
  
- ## Time required for the allele conferring resistance to reach the frequency of 1/2 as a function of θ.
+ ## Spatial distribution of genotypes over time for different refuge configurations. Considering 22% refuge in the around configuration and 23% in the other three configurations.
+
 
 | Around Refuge | Block Refuge |
 |------------------|-------------------|
