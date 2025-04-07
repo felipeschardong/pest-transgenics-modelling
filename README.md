@@ -10,9 +10,3 @@
 | Stripe Refuge | Random Refuge |
 |-------------------|-------------------|
 | ![Animação faixas](animations/animation_stripe.gif) | ![Animação aleatório](animations/animation_random.gif) |
-
-
-
-
-
-**Status:** In Development
