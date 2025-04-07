@@ -1,0 +1,310 @@
+##########################################################################################################################
+############################ Case I: Complete resistance – low fitness costs in refuge ###################################
+##########################################################################################################################
+
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+# Provided data
+data = {
+    "1º CASO": {
+        'around': [1, 3, 3, 4, 9],
+        'block': [3, 4, 4, 4, 4],
+        'stripe': [3, 3, 4, 5, 6],
+        'random': [3, 3, 3, 4, 4]
+    },
+    "2º CASO": {
+        'around': [3, 3, 4, 5, 9],
+        'block': [3, 3, 4, 4, 6],
+        'stripe': [3, 14, 28, 0, 0],
+        'random': [4, 8, 14, 29, 0]
+    },
+    "3º CASO": {
+        'around': [3, 4, 4, 5, 9],
+        'block': [3, 3, 4, 4, 7],
+        'stripe': [4, 15, 0, 0, 0],
+        'random': [5, 11, 30, 0, 0]
+    }
+}
+
+# Initial theta values 
+theta_values_around = [0.12, 0.28, 0.47, 0.69, 1.0]
+theta_values_other = [0.12, 0.29, 0.47, 0.69, 1.0]
+
+# Function to filter data and remove zero values
+def filter_non_zero(theta, values):
+    filtered_theta = [t for t, v in zip(theta, values) if v > 0]
+    filtered_values = [v for v in values if v > 0]
+    return filtered_theta, filtered_values
+
+# Plot configuration
+refuges = ["around", "block", "stripe", "random"]
+cases = ["1º CASO", "2º CASO", "3º CASO"]
+dispersals = ["K = 1", "K = 5", "K = 10"]
+
+# Marker and color configuration for each refuge
+refuge_config = {
+    "around": {"marker": "o", "color": "black", "label": "Around"},
+    "block": {"marker": "s", "color": "red", "label": "Block"},
+    "stripe": {"marker": "^", "color": "blue", "label": "Stripe"},
+    "random": {"marker": "*", "color": "green", "label": "Random"}
+}
+
+# Different line styles
+line_styles = ["-", "--", ":"]
+
+# Creating the subplots
+fig, axs = plt.subplots(1, 4, figsize=(20, 5), sharex=True, sharey=True)  # Share both X and Y axes
+
+for i, refuge in enumerate(refuges):
+    ax = axs[i]
+    for j, case in enumerate(cases):
+        # Choose appropriate theta values
+        theta = theta_values_around if refuge == "around" else theta_values_other
+
+        # Filter the data for the current refuge and case
+        values = data[case][refuge]
+        theta_filtered, values_filtered = filter_non_zero(theta, values)
+
+        # Plot the data with markers and different line styles
+        ax.plot(theta_filtered, values_filtered, 
+                marker=refuge_config[refuge]["marker"], 
+                markersize=6, 
+                linestyle=line_styles[j],  # Different line style for each case
+                label=f"{dispersals[j]}", 
+                color=refuge_config[refuge]["color"])
+    
+    # Set subplot titles
+    ax.set_title(refuge.capitalize(), fontsize=20, fontweight='bold')
+
+    # Set legend
+    ax.legend(loc="upper right", fontsize=14, frameon=True)
+
+    # Set font size
+    ax.tick_params(axis='both', labelsize=14)
+
+    # Make axis tick labels bold
+    plt.setp(ax.get_xticklabels(), fontweight="bold")
+    plt.setp(ax.get_yticklabels(), fontweight="bold")
+    ax.set_ylim(0, 32)
+    ax.set_yticks(np.arange(0, 32, 5))
+
+# Create a main invisible axis for global labels
+ax_main = fig.add_subplot(111, frameon=False)
+ax_main.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+
+# Set common labels for X and Y axes
+ax_main.set_xlabel("Ratio between the non-transgenic area and the transgenic area $\\left(\\theta = \\frac{N_2}{N_1}\\right)$", fontsize=24, fontweight='bold')
+ax_main.set_ylabel("Generations", fontsize=24, fontweight='bold')
+
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# Saving the figure in the Downloads folder
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'general_comparing_refuge_configurations_set_1.png')
+plt.savefig(download_path, dpi=300, bbox_inches='tight')
+
+plt.show()
+
+##########################################################################################################################
+########################## Case II: Complete resistance – high fitness costs in refuge ###################################
+##########################################################################################################################
+
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Provided data
+data = {
+    "1º CASO": {
+        'around': [1, 3, 3, 4, 10],
+        'block': [3, 4, 4, 4, 4],
+        'stripe': [3, 3, 4, 5, 9],
+        'random': [3, 3, 4, 4, 5]
+    },
+    "2º CASO": {
+        'around': [3, 3, 4, 5, 10],
+        'block': [3, 3, 4, 4, 6],
+        'stripe': [3, 15, 34, 0, 0],
+        'random': [4, 8, 15, 35, 0]
+    },
+    "3º CASO": {
+        'around': [3, 4, 4, 5, 10],
+        'block': [3, 3, 4, 4, 7],
+        'stripe': [4, 17, 0, 0, 0],
+        'random': [4, 11, 34, 0, 0]
+    }
+}
+
+# Theta values
+theta_values_around = [0.12, 0.28, 0.47, 0.69, 1.0]
+theta_values_other = [0.12, 0.29, 0.47, 0.69, 1.0]
+
+# Function to filter out zero values
+def filter_non_zero(theta, values):
+    filtered_theta = [t for t, v in zip(theta, values) if v > 0]
+    filtered_values = [v for v in values if v > 0]
+    return filtered_theta, filtered_values
+
+# Plot setup
+refugios = ["around", "block", "stripe", "random"]
+casos = ["1º CASO", "2º CASO", "3º CASO"]
+movimentacoes = ["K = 1", "K = 5", "K = 10"]
+
+# Marker and color config
+config_refugios = {
+    "around": {"marker": "o", "color": "black", "label": "Around"},
+    "block": {"marker": "s", "color": "red", "label": "Block"},
+    "stripe": {"marker": "^", "color": "blue", "label": "Stripe"},
+    "random": {"marker": "*", "color": "green", "label": "Random"}
+}
+
+# Line styleS
+estilos_linha = ["-", "--", ":"]
+
+# Subplots in a row
+fig, axs = plt.subplots(1, 4, figsize=(20, 5), sharex=True, sharey=True)
+
+for i, refugio in enumerate(refugios):
+    ax = axs[i]
+    for j, caso in enumerate(casos):
+        # Escolher os valores de theta conforme o refúgio
+        theta = theta_values_around if refugio == "around" else theta_values_other
+        dados = data[caso][refugio]
+        theta_filtrado, dados_filtrados = filter_non_zero(theta, dados)
+
+        ax.plot(theta_filtrado, dados_filtrados, 
+                marker=config_refugios[refugio]["marker"], 
+                markersize=6, 
+                linestyle=estilos_linha[j], 
+                label=f"{movimentacoes[j]}", 
+                color=config_refugios[refugio]["color"])
+    
+    ax.set_title(refugio.capitalize(), fontsize=20, fontweight='bold')
+    ax.legend(loc="upper left", fontsize=15, frameon=True)
+    ax.tick_params(axis='both', labelsize=14)
+    plt.setp(ax.get_xticklabels(), fontweight="bold")
+    plt.setp(ax.get_yticklabels(), fontweight="bold")
+    ax.set_xlim(0, 1.05)
+    ax.set_ylim(0, 40)
+    ax.set_xticks(np.arange(0, 1.05, 0.2))
+    ax.set_yticks(np.arange(0, 41, 5))
+
+# Invisible axis for global labels
+ax_main = fig.add_subplot(111, frameon=False)
+ax_main.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+
+# Global axis labels
+ax_main.set_xlabel("Ratio between the non-transgenic area and the transgenic area $\\left(\\theta = \\frac{N_2}{N_1}\\right)$", fontsize=24, fontweight='bold')
+ax_main.set_ylabel("Generations", fontsize=24, fontweight='bold')
+
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# Save figure
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'general_comparing_refuge_configurations_set_2.png')
+plt.savefig(download_path, dpi=300, bbox_inches='tight')
+
+plt.show()
+
+##########################################################################################################################
+######################################## Case III: Incomplete resistance #################################################
+##########################################################################################################################
+
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Provided data
+data = {
+    "1º CASO": {
+        'around': [1, 3, 4, 0, 0],
+        'block': [3, 5, 5, 0, 0],
+        'stripe': [3, 4, 5, 6, 9],
+        'random': [3, 4, 4, 4, 5]
+    },
+    "2º CASO": {
+        'around':  [3, 4, 11, 0, 0],
+        'block': [4, 4, 5, 0, 0],
+        'stripe': [4, 29, 0, 0, 0],
+        'random': [4, 13, 28, 0, 0]
+    },
+    "3º CASO": {
+        'around': [4, 5, 11, 39, 0],
+        'block': [3, 4, 5, 0, 0],
+        'stripe': [6, 29, 0, 0, 0],
+        'random': [6, 19, 0, 0, 0]
+    }
+}
+
+# Theta values 
+theta_values_around = [0.12, 0.28, 0.47, 0.69, 1.0]
+theta_values_other =  [0.12, 0.29, 0.47, 0.69, 1.0]
+
+# Function to filter out zero values
+def filter_non_zero(theta, values):
+    filtered_theta = [t for t, v in zip(theta, values) if v > 0]
+    filtered_values = [v for v in values if v > 0]
+    return filtered_theta, filtered_values
+
+# Plot settings
+refuges = ["around", "block", "stripe", "random"]
+cases = ["1º CASO", "2º CASO", "3º CASO"]
+movement_labels = ["K = 1", "K = 5", "K = 10"]
+
+# Colors and markers for each refuge
+refuge_config = {
+    "around": {"marker": "o", "color": "black", "label": "Around"},
+    "block": {"marker": "s", "color": "red", "label": "Block"},
+    "stripe": {"marker": "^", "color": "blue", "label": "Stripe"},
+    "random": {"marker": "*", "color": "green", "label": "Random"}
+}
+
+# Line styles
+line_styles = ["-", "--", ":"]
+
+# Create subplots
+fig, axs = plt.subplots(1, 4, figsize=(20, 5), sharex=True, sharey=True)
+
+for i, refuge in enumerate(refuges):
+    ax = axs[i]
+    for j, case in enumerate(cases):
+        values = data[case][refuge]
+        theta_list = theta_values_around if refuge == "around" else theta_values_other
+        theta_filtered, values_filtered = filter_non_zero(theta_list, values)
+
+        ax.plot(theta_filtered, values_filtered, 
+                marker=refuge_config[refuge]["marker"], 
+                markersize=6, 
+                linestyle=line_styles[j],
+                label=f"{movement_labels[j]}", 
+                color=refuge_config[refuge]["color"])
+    
+    # Title for each subplot 
+    ax.set_title(refuge.capitalize(), fontsize=20, fontweight='bold')
+
+    # Place legend
+    ax.legend(loc="upper right", fontsize=15, frameon=True)
+    ax.tick_params(axis='both', labelsize=14)
+    plt.setp(ax.get_xticklabels(), fontweight="bold")
+    plt.setp(ax.get_yticklabels(), fontweight="bold")
+
+    ax.set_xlim(0, 1.05)
+    ax.set_ylim(0, 40)
+    ax.set_xticks(np.arange(0, 1.05, 0.2))
+    ax.set_yticks(np.arange(0, 41, 5))
+
+# Create an invisible main axis to add global labels
+ax_main = fig.add_subplot(111, frameon=False)
+ax_main.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+
+# Set global
+ax_main.set_xlabel("Ratio between the non-transgenic area and the transgenic area $\\left(\\theta = \\frac{N_2}{N_1}\\right)$", fontsize=24, fontweight='bold')
+ax_main.set_ylabel("Generations", fontsize=24, fontweight='bold')
+
+plt.tight_layout(rect=[0, 0, 1, 0.95])
+
+# Save figure in the Downloads folder
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'general_comparing_refuge_configurations_set_3.png')
+plt.savefig(download_path, dpi=300, bbox_inches='tight')
+
+plt.show()
