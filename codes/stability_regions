@@ -1,25 +1,25 @@
-# Importing libraries and packages
+# importing libraries and packages
 import os 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Rectangle
 
-# Initial parameters
-wr1, wr2 = 0.5, 0.8
+# initial parameters
+wr1, wr2 = 1.0, 0.9
 ws1, ws2 = 0.0, 1.0
 
-# Interval of h1 and h2
+# interval of h1 and h2
 h1_range = np.linspace(0, 1, 1000)
 h2_range = np.linspace(0, 1, 1000)
 H1, H2 = np.meshgrid(h1_range, h2_range)
 
-# Values of theta to plot
-theta_values = [0.12, 0.28, 0.47, 0.69, 1.0]
+# values of theta to plot
+theta_values = [0.12, 0.29, 0.47, 0.69, 1.0]
 
-# Plot configuration
+# plot configuration
 fig, axes = plt.subplots(1, len(theta_values), figsize=(20, 4), sharey=True)
 for i, theta in enumerate(theta_values):
-    # Stability condition for each equilibrium point
+    # stability condition for each equilibrium point
     cond_a = H1 + theta * (H2 - wr2) - wr1 < 0
     cond_b = H1 - ws1 + theta * (H2 - ws2) < 0
     cond_c = (H1 + theta * (H2 - wr2) - wr1 > 0) & (H1 - ws1 + theta * (H2 - ws2) > 0)
@@ -27,33 +27,36 @@ for i, theta in enumerate(theta_values):
     ax = axes[i]
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    ax.set_title(f"$\\theta = {theta}$", fontsize=20, fontweight='bold')
+    ax.set_title(f"$\\theta = {theta}$", fontsize=30, fontweight='bold')
     
-    # Plotting each region
-    ax.contourf(H1, H2, cond_a, levels=[0.5, 1], colors="gray", alpha=0.5)  
-    ax.contourf(H1, H2, cond_b, levels=[0.5, 1], colors="black", alpha=0.99) 
-    ax.contourf(H1, H2, cond_c, levels=[0.5, 1], colors="white", alpha=0.5)  
+    # plotting each region
+    ax.contourf(H1, H2, cond_a, levels=[0.5, 1], colors="gray", alpha=0.5)  # gray region
+    ax.contourf(H1, H2, cond_b, levels=[0.5, 1], colors="black", alpha=0.99)  # black region
+    ax.contourf(H1, H2, cond_c, levels=[0.5, 1], colors="white", alpha=0.5)  # white region
     
-    ax.add_patch(Rectangle((0, 0), 1, 1, fill=None, edgecolor='black', linewidth=1.5)) 
+    ax.add_patch(Rectangle((0, 0), 1, 1, fill=None, edgecolor='black', linewidth=1.5)) # graph style
 
-# Adjusting layout
-fig.supxlabel(r'Fitness heterozygous in $N_1$​ ($h_1$​)', fontsize=20, fontweight='bold')
-sup_ylabel = fig.supylabel(r'Fitness heterozygous in $N_2$​ ($h_2$​)', fontsize=20, fontweight='bold')
+# Adjusting layout and showing the plot
+fig.supxlabel(r'Fitness heterozygous in $N_1$​ ($h_1$​)', fontsize=30, fontweight='bold')
+fig.text(-0.03, 0.6, 'Fitness heterozygous \n in $N_2$ ($h_2$)', 
+         fontsize=30, fontweight='bold', ha='center', va='center', rotation=90)
+
 fig.subplots_adjust(left=0.1)  
 
-sup_ylabel.set_position((-0.001, 0.5)) 
 plt.tight_layout()
 
 for ax in axes:
     for label in ax.get_xticklabels():
-        label.set_fontsize(14)
+        label.set_fontsize(16)
         label.set_fontweight('bold')  
+
+    # Setting the font size and weight for y-axis ticks
     for label in ax.get_yticklabels():
-        label.set_fontsize(14)  # Font size
+        label.set_fontsize(16)  # Font size
         label.set_fontweight('bold') 
 
-# Saving the figure in the Downloads folder
-#download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'stability_regions_CASEIII.png')
+# Salvando a figura na pasta "Downloads"
+#download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'stability_regions_CASEI.png')
 #plt.savefig(download_path, dpi=300, bbox_inches='tight')
 
 plt.show()
