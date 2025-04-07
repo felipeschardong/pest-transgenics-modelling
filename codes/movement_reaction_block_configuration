@@ -4,16 +4,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
+from matplotlib import animation
 from matplotlib.patches import Rectangle
 from IPython.display import HTML
-from matplotlib import animation
-from matplotlib.animation import FuncAnimation
 
 # Initial parameters
 na = 35
 b = 0.5
 mii = 0.3
 gamma = 400
+
 
 # Case I: Complete resistance – low fitness costs in refuge
 wlr1, wlh1, wls1 = 1.0, 0.05, 0.0
@@ -62,7 +63,6 @@ while occupied_h < min_cells:
         if occupied_h >= min_cells:
             break
 
-
 # Diffusion
 def diff_matrix(matrix, mii):
     result = np.copy(matrix)
@@ -74,50 +74,44 @@ def diff_matrix(matrix, mii):
             )
     return result
 
-# Function to create Wx, Wy, and Wz with refuge around
-def create_W_matrices_condition_based(na, condition):
-    if condition == 1:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if i == 1 or i == 35 or j == 1 or j == 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if i == 1 or i == 35 or j == 1 or j == 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if i == 1 or i == 35 or j == 1 or j == 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-    elif condition == 2:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-    elif condition == 3:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-    elif condition == 4:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-    elif condition == 5:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+# Function to create Wx, Wy, and Wz with blocks
+def create_W_matrices_block(na, condition):
+    Wx = np.zeros((na, na))
+    Wy = np.zeros((na, na))
+    Wz = np.zeros((na, na))
+    
+    block_size = condition
+    
+    for i in range(na):
+        for j in range(na):
+            if i < 1 or i > na - 1 or j < 1 or j > na - 1:
+                Wx[i, j], Wy[i, j], Wz[i, j] = 0, 0, 0
+            elif i >= na - block_size:  
+                Wx[i, j], Wy[i, j], Wz[i, j] = wlr2, wls2, wlh2
+            else:
+                Wx[i, j], Wy[i, j], Wz[i, j] = wlr1, wls1, wlh1
     return Wx, Wy, Wz
 
-# Conditions to be tested    
-conditions = [1, 2, 3, 4, 5]
+# Conditions to be tested
+conditions = [4, 8, 11, 14, 17]
 
 # Initializes dictionaries to store different types of simulation data
 results = {}
 generations_to_half = {}
-evolution_data = {} 
+evolution_data = {}
 
 # Mapping of conditions to θ values (refuge area)
-condition_to_value = {
-    "1": 132,
-    "2": 256,
-    "3": 372,
-    "4": 480, 
-    "5": 580
+condition_to_area = {
+    4: 136,   # 4*34
+    8: 272,   # 8*34
+    11: 374,  # 11*34
+    14: 476,  # 14*34
+    17: 578   # 17*34
 }
 
-# Iteration over each condition
+# Iteration over each condition\\\\
 for condition in conditions:
-    Wx, Wy, Wz = create_W_matrices_condition_based(na, condition)
+    Wx, Wy, Wz = create_W_matrices_block(na, condition)
 
     # Stores the temporal evolution of each genotype
     evolution_data[condition] = {
@@ -133,7 +127,7 @@ for condition in conditions:
 
     # Temporary genotype distribution (initial state)
     Xz_temp, Yz_temp, Hz_temp = np.copy(Xz), np.copy(Yz), np.copy(Hz)
-
+    
     # Stores the initial condition (generation 0)
     evolution_data[condition]['RG'].append(Xz_temp.copy())
     evolution_data[condition]['SG'].append(Yz_temp.copy())
@@ -154,9 +148,9 @@ for condition in conditions:
         Q = np.zeros((na, na))
         for i in range(na):
             for j in range(na):
-                              if hax[i, j] + hay[i, j] + hah[i, j] > 0:
-                                 P[i, j] = (hax[i, j] + 0.5 * hah[i, j]) / (hax[i, j] + hay[i, j] + hah[i, j])
-                                 Q[i, j] = (hay[i, j] + 0.5 * hah[i, j]) / (hax[i, j] + hay[i, j] + hah[i, j])
+                if hax[i, j] + hay[i, j] + hah[i, j] > 0:
+                    P[i, j] = (hax[i, j] + 0.5 * hah[i, j]) / (hax[i, j] + hay[i, j] + hah[i, j])
+                    Q[i, j] = (hay[i, j] + 0.5 * hah[i, j]) / (hax[i, j] + hay[i, j] + hah[i, j])
 
         X = (P**2 * gamma * A / (1 + b * A)) * Wx
         Y = (Q**2 * gamma * A / (1 + b * A)) * Wy
@@ -173,12 +167,13 @@ for condition in conditions:
         ptlr = np.sum(X)
         ptls = np.sum(Y)
         ptlh = np.sum(Z)
+        
 
         # Frequency of each genotype
         fplr = ptlr / (ptlr + ptls + ptlh)
         fpls = ptls / (ptlr + ptls + ptlh)
         fplh = ptlh / (ptlr + ptls + ptlh)
-
+        
         # Frequency of the resistant allele
         fpr = (ptlr + 0.5*ptlh) / (ptlr + ptls + ptlh)
 
@@ -189,11 +184,11 @@ for condition in conditions:
 
         # Checks whether the resistant allele reaches or exceeds 1/2
         if fpr >= 0.5 and condition not in generations_to_half:
-            generations_to_half[condition] = gen + 1  # Stores the number of generations until 1/2
+            generations_to_half[condition] = gen + 1 # Stores the number of generations until 1/2
 
     # If it didn't reach 1/2 after all iterations, add 0
     if condition not in generations_to_half:
-        generations_to_half[condition] = 0  
+        generations_to_half[condition] = 0
 
     # Saving the results for the current condition
     results[condition] = (vfplr, vfpls, vfplh)
@@ -203,12 +198,11 @@ plt.figure(figsize=(10, 6))
 lines = []
 labels = []
 
-
 # Resistant genotype curves
 for condition in conditions:
     vfplr, vfpls, vfplh = results[condition]
-    N_2 = (condition_to_value[str(condition)] / 1156) * 100  
-    N_2_str = str(int(N_2))[:2]  
+    N_2 = (condition_to_area[condition] / (34*34)) * 100  
+    N_2_str = str(int(N_2))[:2]
     line_res, = plt.plot(vfplr, label=fr'RG ($N_2 = {N_2_str}$%)', linestyle='solid')
     lines.append(line_res)
     labels.append(fr'RG ($N_2 = {N_2_str}$%)')
@@ -216,8 +210,8 @@ for condition in conditions:
 # Susceptible genotype curves
 for condition in conditions:
     vfplr, vfpls, vfplh = results[condition]
-    N_2 = (condition_to_value[str(condition)] / 1156) * 100 
-    N_2_str = str(int(N_2))[:2]  
+    N_2 = (condition_to_area[condition] / (34*34)) * 100
+    N_2_str = str(int(N_2))[:2]
     line_sus, = plt.plot(vfpls, label=fr'SG ($N_2 = {N_2_str}$%)', linestyle='dotted')
     lines.append(line_sus)
     labels.append(fr'SG ($N_2 = {N_2_str}$%)')
@@ -225,47 +219,44 @@ for condition in conditions:
 # Heterozygous genotype curves
 for condition in conditions:
     vfplr, vfpls, vfplh = results[condition]
-    N_2 = (condition_to_value[str(condition)] / 1156) * 100  
-    N_2_str = str(int(N_2))[:2]  
+    N_2 = (condition_to_area[condition] / (34*34)) * 100
+    N_2_str = str(int(N_2))[:2]
     line_het, = plt.plot(vfplh, label=fr'HG ($N_2 = {N_2_str}$%)', linestyle='dashed')
     lines.append(line_het)
     labels.append(fr'HG ($N_2 = {N_2_str}$%)')
-
-
 
 # Setting the axes and title
 plt.xlabel("Generations", fontsize=27, fontweight='bold')
 plt.ylabel("Genotype Frequency", fontsize=27, fontweight='bold')
 plt.xlim(-0.5, 50)
 
-ax = plt.gca() 
-ax.tick_params(axis='both', labelsize=17)  
+ax = plt.gca()
+ax.tick_params(axis='both', labelsize=17)
 for label in ax.get_xticklabels() + ax.get_yticklabels():
-    label.set_fontweight('bold')  
-# Legend
-plt.legend(lines, labels, loc='center left', bbox_to_anchor=(1.02, 0.5),  prop={'weight': 'bold', 'size': 18})
-plt.tight_layout()  
+    label.set_fontweight('bold')
+
+plt.legend(lines, labels, loc='center left', bbox_to_anchor=(1.02, 0.5), prop={'weight': 'bold', 'size': 18})
+plt.tight_layout()
 plt.grid(False)
 
 # Saving the figure in the Downloads folder
-download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'around_configuration_parameter_set1_reaction_difusion.png')
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'block_configuration_parameter_set1_reaction_difusion.png')
 plt.savefig(download_path, dpi=300, bbox_inches='tight')
-
 plt.show()
 
 # Displaying the number of generations until the resistant allele reaches 1/2
 generation_values = []
 for condition, gen_count in generations_to_half.items():
-    generation_values.append(gen_count) 
+    generation_values.append(gen_count)
 
-print("around =", generation_values)
+print("block =", generation_values)
 
 #############################################################################################################################
-##########################################  SPATIAL DISTRIBUTION ###########################################################
-############################################################################################################################
+##########################################  SPATIAL DISTRIBUTION ############################################################
+#############################################################################################################################
 
-# Condition and times
-condition = 2  # other conditions: 1, 2, 3, 4, 5
+# condition and times
+condition = 8 # other conditions: 4, 8, 11, 14, 17
 it_values = [5, 10, 50]
 
 # Genotype spatial distribution at selected times
@@ -291,17 +282,17 @@ for row, (label, data) in enumerate(zip(genotype_labels, genotype_data)):
         ax.imshow(img, cmap='binary')
         
         if row == 0:
-            ax.set_title(f't={t}', fontsize=20, weight='bold')
+            ax.set_title(f't={t}', fontsize=30, weight='bold')
 
         ax.add_patch(Rectangle((0, 0), 1, 1, transform=ax.transAxes, ec='black', lw=3, fill=False))
         ax.axis('off')
-
+     
     axs[row, 0].annotate(label, xy=(-0.22, 0.5), xycoords='axes fraction', fontsize=18, weight='bold', ha='center', va='center', rotation=90)
-
+    
 plt.subplots_adjust(left=0.15, right=0.95, top=0.7, bottom=0.00, hspace=0.03, wspace=0.02)
 
 # Save the figure in the Downloads folder
-plt.savefig(os.path.expanduser('~/Downloads/spatial_distribution_around.png'), dpi=200, bbox_inches='tight')
+plt.savefig(os.path.expanduser('~/Downloads/spatial_distribution_block.png'), dpi=200, bbox_inches='tight')
 
 plt.show()
 
@@ -310,17 +301,13 @@ plt.show()
 #############################################################################################################################
 
 # Condition
-condition_to_animate = 2  # other conditions: 1, 2, 3, 4, 5
-
-# Checks whether the folder exists
-os.makedirs('animations', exist_ok=True)
+condition_to_animate = 8 # other conditions (4, 8, 11, 14, 17)
 
 #Creating the figure
-fig = plt.figure(figsize=(15, 5))
-gs = fig.add_gridspec(2, 3, height_ratios=[10, 1])
+fig = plt.figure(figsize=(15, 5))  
+gs = fig.add_gridspec(2, 3, height_ratios=[10, 1])  
 axes = [fig.add_subplot(gs[0, i]) for i in range(3)]
-text_ax = fig.add_subplot(gs[1, :])
-
+text_ax = fig.add_subplot(gs[1, :]) 
 titles = ["Resistant", "Susceptible", "Heterozygous"]
 
 # Dynamic bottom text 
@@ -337,7 +324,7 @@ def update(frame):
         ax.clear()
         ax.imshow(evolution_data[condition_to_animate][data][frame], 
                   cmap='binary', interpolation='none')
-        ax.set_title(f"{title}", fontweight='bold', fontsize=30)  
+        ax.set_title(f"{title}", fontweight='bold', fontsize=30) 
         ax.axis('off')
         rect = Rectangle((0, 0), 1, 1, transform=ax.transAxes, 
                          linewidth=4, edgecolor='black', facecolor='none')
@@ -352,7 +339,7 @@ def update(frame):
 anim = FuncAnimation(fig, update, frames=51, interval=300)
 
 # Saving the GIF 
-download_path = os.path.join(os.path.expanduser('~'), 'Downloads', f'animation_around.gif')
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', f'animation_block.gif')
 anim.save(download_path, writer='pillow', fps=3, dpi=100)
 
 # Display in notebook 
