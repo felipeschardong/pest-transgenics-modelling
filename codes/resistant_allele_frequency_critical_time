@@ -1,0 +1,113 @@
+# Importing libraries and packages
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameter sets organized by case
+param_sets = {
+    'Case I': [
+        {"wlr1": 1.0, "wlh1": 0.05, "wls1": 0.0, "wlr2": 0.9, "wlh2": 0.9, "wls2": 1.0},
+        {"wlr1": 1.0, "wlh1": 0.3, "wls1": 0.0, "wlr2": 0.9, "wlh2": 0.9, "wls2": 1.0}
+    ],
+    'Case II': [
+        {"wlr1": 1.0, "wlh1": 0.05, "wls1": 0.0, "wlr2": 0.3, "wlh2": 0.9, "wls2": 1.0},
+        {"wlr1": 1.0, "wlh1": 0.3, "wls1": 0.0, "wlr2": 0.3, "wlh2": 0.9, "wls2": 1.0}
+    ],
+    'Case III': [
+        {"wlr1": 0.5, "wlh1": 0.05, "wls1": 0.0, "wlr2": 0.9, "wlh2": 0.9, "wls2": 1.0},
+        {"wlr1": 0.5, "wlh1": 0.3, "wls1": 0.0, "wlr2": 0.9, "wlh2": 0.9, "wls2": 1.0}
+    ]
+}
+
+# Define a color map with six distinct colors
+color_map = {
+    ('Case I', 0.05): 'blue',
+    ('Case I', 0.3): 'cyan',
+    ('Case II', 0.05): 'green',
+    ('Case II', 0.3): 'yellow',
+    ('Case III', 0.05): 'purple',
+    ('Case III', 0.3): 'red'
+}
+
+# Startups
+theta_values = np.arange(0, 1.001, 0.001)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Store legend entries separately
+legend_handles = []
+legend_labels = []
+
+# Loop through cases and parameters
+for case, sets in param_sets.items():
+    # Add a title to the legend for the case (without color association)
+    legend_handles.append(plt.Line2D([0], [0], color='w', label=case, linewidth=0))
+    legend_labels.append(case)
+
+    for params in sets:
+        wlh1 = params["wlh1"]
+        
+        # Simulate system (same logic as before)
+        vt = []
+        solp = []  # Initialize solp array for each parameter set
+        
+        for theta in theta_values:
+            p = 0.01
+            q = 1 - p
+            solp_temp = [p]  # Temporary list for solp values
+            
+            for _ in range(700):
+                mfv = (p**2 * params["wlr1"] + 2 * p * q * wlh1 + q**2 * params["wls1"]) + \
+                      theta * (p**2 * params["wlr2"] + 2 * p * q * params["wlh2"] + q**2 * params["wls2"])
+                pn = ((p**2 * params["wlr1"] + p * q * wlh1) + theta * (p**2 * params["wlr2"] + p * q * params["wlh2"])) / mfv
+                qn = ((q**2 * params["wls1"] + p * q * wlh1) + theta * (q**2 * params["wls2"] + p * q * params["wlh2"])) / mfv
+                p, q = pn, qn
+                solp_temp.append(p)
+
+            # Frequency transition condition
+            vpt = [1 if solp_temp[699] >= 0.5 and 0.5 - solp_temp[i] > 0.01 * 0.5 else 0 for i in range(700)]
+            tr = sum(vpt)
+
+            vt.append([theta, tr])
+            solp.append(solp_temp)  # Store the full solp for each theta
+
+        # Plot individual curve with color based on case and h1 value
+        color = color_map[(case, wlh1)]
+        vt_array = np.array(vt)
+
+        # Set different point sizes for each case with h1=0.05 based on the condition solp < 0.5
+        for i in range(len(vt_array)):
+            if solp[i][-1] < 0.5:  # Check the last value of solp for the condition
+                # Customize point size for solp < 0.5 for each case with h1=0.05
+                if wlh1 == 0.05 and case == 'Case I':
+                    plt.scatter(vt_array[i, 0], vt_array[i, 1], s=150, color=color)  # Case I, h1=0.05, larger size
+                elif wlh1 == 0.05 and case == 'Case II':
+                    plt.scatter(vt_array[i, 0], vt_array[i, 1], s=50, color=color)  # Case II, h1=0.05, medium size
+                elif wlh1 == 0.05 and case == 'Case III':
+                    plt.scatter(vt_array[i, 0], vt_array[i, 1], s=5, color=color)  # Case III, h1=0.05, smaller size
+                else:
+                    plt.scatter(vt_array[i, 0], vt_array[i, 1], s=10, color=color)  # Default size for other cases
+            else:
+                plt.scatter(vt_array[i, 0], vt_array[i, 1], s=10, color=color)  # Default size for solp >= 0.5
+
+        # Add entry to the legend for each h1 with corresponding color
+        legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=10))
+        legend_labels.append(f"$h_1 = {wlh1}$")
+
+plt.legend(legend_handles, legend_labels, fontsize=12, prop={'weight': 'bold', 'size': 11}, ncol=3, bbox_to_anchor=(0.5, 0.13))
+
+plt.xlabel("Ratio between non-transgenic area and transgenic area $\\left(\\theta = \\frac{N_2}{N_1}\\right)$", fontsize=18, fontweight='bold')
+plt.ylabel("Generations", fontsize=20, fontweight='bold')
+plt.ylim(-0.5, 50)
+plt.xlim(-0.01, 1)
+plt.xticks(np.arange(0, 1.1, 0.1), fontsize=12, fontweight='bold')
+plt.yticks(np.arange(0, 55, 5), fontsize=12, fontweight='bold')
+plt.grid(False)
+plt.tight_layout()
+
+# Saving the figure in the Downloads folder
+#download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'resistant_allele_frequency_critical_time.png')
+#plt.savefig(download_path, dpi=300, bbox_inches='tight')
+
+plt.show()
