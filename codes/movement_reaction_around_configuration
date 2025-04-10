@@ -4,13 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import matplotlib.animation as animation
-from matplotlib.patches import Rectangle
 from IPython.display import HTML
-from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 
 # Initial parameters
-na = 35
+na = 36
 b = 0.5
 mii = 0.3
 gamma = 400
@@ -62,49 +60,34 @@ while occupied_h < min_cells:
         if occupied_h >= min_cells:
             break
 
-
-# Diffusion
-def diff_matrix(matrix, mii):
-    result = np.copy(matrix)
-    for i in range(1, na-1):
-        for j in range(1, na-1):
-            result[i, j] = (
-                (1 - mii) * matrix[i, j]
-                + mii / 4 * (matrix[i-1, j] + matrix[i+1, j] + matrix[i, j-1] + matrix[i, j+1])
-            )
-    return result
-
 # Function to create Wx, Wy, and Wz with refuge around
 def create_W_matrices_condition_based(na, condition):
     if condition == 1:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if i == 1 or i == 35 or j == 1 or j == 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if i == 1 or i == 35 or j == 1 or j == 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if i == 1 or i == 35 or j == 1 or j == 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+        Wx = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlr2 if i == 1 or i == na - 2 or j == 1 or j == na - 2 else wlr1 for j in range(na)] for i in range(na)])
+        Wy = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wls2 if i == 1 or i == na - 2 or j == 1 or j == na - 2 else wls1 for j in range(na)] for i in range(na)])
+        Wz = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlh2 if i == 1 or i == na - 2 or j == 1 or j == na - 2 else wlh1 for j in range(na)] for i in range(na)])
     elif condition == 2:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 2 or 34 <= i <= 35 or 1 <= j <= 2 or 34 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+        Wx = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlr2 if 1 <= i <= 2 or 33 <= i <= na - 2 or 1 <= j <= 2 or 33 <= j <= na - 2 else wlr1 for j in range(na)] for i in range(na)])
+        Wy = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wls2 if 1 <= i <= 2 or 33 <= i <= na - 2 or 1 <= j <= 2 or 33 <= j <= na - 2 else wls1 for j in range(na)] for i in range(na)])
+        Wz = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlh2 if 1 <= i <= 2 or 33 <= i <= na - 2 or 1 <= j <= 2 or 33 <= j <= na - 2 else wlh1 for j in range(na)] for i in range(na)])
     elif condition == 3:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 3 or 33 <= i <= 35 or 1 <= j <= 3 or 33 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+        Wx = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlr2 if 1 <= i <= 3 or 32 <= i <= na - 2 or 1 <= j <= 3 or 32 <= j <= na - 2 else wlr1 for j in range(na)] for i in range(na)])
+        Wy = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wls2 if 1 <= i <= 3 or 32 <= i <= na - 2 or 1 <= j <= 3 or 32 <= j <= na - 2 else wls1 for j in range(na)] for i in range(na)])
+        Wz = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlh2 if 1 <= i <= 3 or 32 <= i <= na - 2 or 1 <= j <= 3 or 32 <= j <= na - 2 else wlh1 for j in range(na)] for i in range(na)])
     elif condition == 4:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 4 or 32 <= i <= 35 or 1 <= j <= 4 or 32 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+        Wx = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlr2 if 1 <= i <= 4 or 31 <= i <= na - 2 or 1 <= j <= 4 or 31 <= j <= na - 2 else wlr1 for j in range(na)] for i in range(na)])
+        Wy = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wls2 if 1 <= i <= 4 or 31 <= i <= na - 2 or 1 <= j <= 4 or 31 <= j <= na - 2 else wls1 for j in range(na)] for i in range(na)])
+        Wz = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlh2 if 1 <= i <= 4 or 31 <= i <= na - 2 or 1 <= j <= 4 or 31 <= j <= na - 2 else wlh1 for j in range(na)] for i in range(na)])
     elif condition == 5:
-        Wx = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlr2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wlr1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wy = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wls2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wls1 for j in range(1, na + 1)] for i in range(1, na + 1)])
-        Wz = np.array([[0 if i < 1 or i > na - 1 or j < 1 or j > na - 1 else wlh2 if 1 <= i <= 5 or 31 <= i <= 35 or 1 <= j <= 5 or 31 <= j <= 35 else wlh1 for j in range(1, na + 1)] for i in range(1, na + 1)])
+        Wx = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlr2 if 1 <= i <= 5 or 30 <= i <= na - 2 or 1 <= j <= 5 or 30 <= j <= na - 2 else wlr1 for j in range(na)] for i in range(na)])
+        Wy = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wls2 if 1 <= i <= 5 or 30 <= i <= na - 2 or 1 <= j <= 5 or 30 <= j <= na - 2 else wls1 for j in range(na)] for i in range(na)])
+        Wz = np.array([[0 if i < 1 or i > na - 2 or j < 1 or j > na - 2 else wlh2 if 1 <= i <= 5 or 30 <= i <= na - 2 or 1 <= j <= 5 or 30 <= j <= na - 2 else wlh1 for j in range(na)] for i in range(na)])
     return Wx, Wy, Wz
+
 
 # Conditions to be tested    
 conditions = [1, 2, 3, 4, 5]
 
-# Initializes dictionaries to store different types of simulation data
-results = {}
-generations_to_half = {}
-evolution_data = {} 
 
 # Mapping of conditions to θ values (refuge area)
 condition_to_value = {
@@ -114,6 +97,50 @@ condition_to_value = {
     "4": 480, 
     "5": 580
 }
+
+# Diffusion
+def diff_matrix(matrix, mii):
+    n = matrix.shape[0]
+    diffused_matrix = np.zeros_like(matrix)
+    
+    # Central region 
+    for i in range(1, n-1):
+        for j in range(1, n-1):
+            diffused_matrix[i,j] = (1 - mii) * matrix[i,j] + mii/4 * (
+                matrix[i-1,j] + matrix[i+1,j] + matrix[i,j-1] + matrix[i,j+1])
+    
+    # Top boundary 
+    for j in range(1, n-1):
+        diffused_matrix[0,j] = (1 - mii) * matrix[0,j] + mii/4 * (
+            matrix[1,j] + matrix[1,j] +  
+            matrix[0,j-1] + matrix[0,j+1])  
+    
+    # Bottom boundary 
+    for j in range(1, n-1):
+        diffused_matrix[n-1,j] = (1 - mii) * matrix[n-1,j] + mii/4 * (
+            matrix[n-2,j] + matrix[n-2,j] +  
+            matrix[n-1,j-1] + matrix[n-1,j+1])
+    
+    # Left boundary 
+    for i in range(1, n-1):
+        diffused_matrix[i,0] = (1 - mii) * matrix[i,0] + mii/4 * (
+            matrix[i-1,0] + matrix[i+1,0] +  
+            matrix[i,1] + matrix[i,1]) 
+    
+    # Right boundary 
+    for i in range(1, n-1):
+        diffused_matrix[i,n-1] = (1 - mii) * matrix[i,n-1] + mii/4 * (
+            matrix[i-1,n-1] + matrix[i+1,n-1] +  
+            matrix[i,n-2] + matrix[i,n-2])  
+    
+    return diffused_matrix
+
+
+
+# Initializes dictionaries to store different types of simulation data
+results = {}
+generations_to_half = {}
+evolution_data = {} 
 
 # Iteration over each condition
 for condition in conditions:
@@ -148,6 +175,7 @@ for condition in conditions:
 
             Xz_temp, Yz_temp, Hz_temp = hax, hay, hah
 
+           
         A = 0.5 * (hax + hay + hah)
 
         P = np.zeros((na, na))
@@ -256,13 +284,12 @@ plt.show()
 # Displaying the number of generations until the resistant allele reaches 1/2
 generation_values = []
 for condition, gen_count in generations_to_half.items():
-    generation_values.append(gen_count) 
+    generation_values.append(gen_count)
 
 print("around =", generation_values)
-
 #############################################################################################################################
-##########################################  SPATIAL DISTRIBUTION ###########################################################
-############################################################################################################################
+##########################################  SPATIAL DISTRIBUTION ############################################################
+#############################################################################################################################
 
 # Condition and times
 condition = 2  # other conditions: 1, 2, 3, 4, 5

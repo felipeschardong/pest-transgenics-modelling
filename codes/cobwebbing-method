@@ -104,7 +104,7 @@ for idx, (ax, cond) in enumerate(zip(axes, conditions)):
             arrow_count += 1
 
         # Label "Cob-web" next to the first segment
-        ax.text(sol[0] + 0.06, f0/2 + cond['cob_web_pos'], "Cob-web", color=line_color, fontsize=27,
+        ax.text(sol[0] + 0.06, f0/2 + cond['cob_web_pos'], "Cobweb", color=line_color, fontsize=27,
                 rotation=90, rotation_mode='anchor',
                 ha='right', va='center')
 
@@ -149,7 +149,7 @@ for idx, (ax, cond) in enumerate(zip(axes, conditions)):
     ax.text(0.05, 0.95, legend_str, transform=ax.transAxes,
             fontsize=22, verticalalignment='top', bbox=dict(facecolor='white', alpha=0.5), fontweight='bold')
 
-    # Set title and axis style
+    # Set title and axis styles
     ax.set_title(f"{cond['label']}", fontsize=30, fontweight='bold')
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
@@ -164,7 +164,7 @@ fig.supylabel('Resistant allele frequency \n at $t + 1$, $(p_{t+1})$', fontsize=
 fig.subplots_adjust(left=0.1, right=1.0, bottom=0.2)
 
 # Save the figure to the Downloads folder
-#download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'cobwebbing_method_all_four_cases.png')
-#plt.savefig(download_path, dpi=300, bbox_inches='tight')
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'cobwebbing_method_all_four_cases.png')
+plt.savefig(download_path, dpi=300, bbox_inches='tight')
 
 plt.show()

@@ -5,12 +5,10 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
-from matplotlib import animation
-from matplotlib.patches import Rectangle
 from IPython.display import HTML
 
 # Initial parameters
-na = 35
+na = 36
 b = 0.5
 mii = 0.3
 gamma = 400
@@ -62,36 +60,25 @@ while occupied_h < min_cells:
         if occupied_h >= min_cells:
             break
 
-# Diffusion
-def diff_matrix(matrix, mii):
-    result = np.copy(matrix)
-    for i in range(1, na-1):
-        for j in range(1, na-1):
-            result[i, j] = (
-                (1 - mii) * matrix[i, j]
-                + mii / 4 * (matrix[i-1, j] + matrix[i+1, j] + matrix[i, j-1] + matrix[i, j+1])
-            )
-    return result
-
 # Function to create Wx, Wy, and Wz with refuge random
 def create_W_matrices(na, threshold, wlr1, wlr2, wls1, wls2, wlh1, wlh2):
     np.random.seed(6)  
     Wx = np.array([
-        [0 if i < 1 or i > na-1 or j < 1 or j > na-1 else (wlr2 if np.random.rand() < threshold else wlr1)
+        [0 if i < 1 or i > na-2 or j < 1 or j > na-2 else (wlr2 if np.random.rand() < threshold else wlr1)
          for j in range(na)]
         for i in range(na)
     ])
 
     np.random.seed(6)
     Wy = np.array([
-        [0 if i < 1 or i > na-1 or j < 1 or j > na-1 else (wls2 if np.random.rand() < threshold else wls1)
+        [0 if i < 1 or i > na-2 or j < 1 or j > na-2 else (wls2 if np.random.rand() < threshold else wls1)
          for j in range(na)]
         for i in range(na)
     ])
 
     np.random.seed(6)
     Wz = np.array([
-        [0 if i < 1 or i > na-1 or j < 1 or j > na-1 else (wlh2 if np.random.rand() < threshold else wlh1)
+        [0 if i < 1 or i > na-2 or j < 1 or j > na-2 else (wlh2 if np.random.rand() < threshold else wlh1)
          for j in range(na)]
         for i in range(na)
     ])
@@ -99,6 +86,44 @@ def create_W_matrices(na, threshold, wlr1, wlr2, wls1, wls2, wlh1, wlh2):
 
 # Conditions to be tested
 thresholds = [0.11, 0.23, 0.32, 0.41, 0.50]
+
+
+# Diffusion
+def diff_matrix(matrix, mii):
+    n = matrix.shape[0]
+    diffused_matrix = np.zeros_like(matrix)
+    
+    # Central region 
+    for i in range(1, n-1):
+        for j in range(1, n-1):
+            diffused_matrix[i,j] = (1 - mii) * matrix[i,j] + mii/4 * (
+                matrix[i-1,j] + matrix[i+1,j] + matrix[i,j-1] + matrix[i,j+1])
+    
+    # Top boundary 
+    for j in range(1, n-1):
+        diffused_matrix[0,j] = (1 - mii) * matrix[0,j] + mii/4 * (
+            matrix[1,j] + matrix[1,j] +  
+            matrix[0,j-1] + matrix[0,j+1])  
+    
+    # Bottom boundary 
+    for j in range(1, n-1):
+        diffused_matrix[n-1,j] = (1 - mii) * matrix[n-1,j] + mii/4 * (
+            matrix[n-2,j] + matrix[n-2,j] +  
+            matrix[n-1,j-1] + matrix[n-1,j+1])
+    
+    # Left boundary 
+    for i in range(1, n-1):
+        diffused_matrix[i,0] = (1 - mii) * matrix[i,0] + mii/4 * (
+            matrix[i-1,0] + matrix[i+1,0] +  
+            matrix[i,1] + matrix[i,1]) 
+    
+    # Right boundary 
+    for i in range(1, n-1):
+        diffused_matrix[i,n-1] = (1 - mii) * matrix[i,n-1] + mii/4 * (
+            matrix[i-1,n-1] + matrix[i+1,n-1] +  
+            matrix[i,n-2] + matrix[i,n-2])  
+    
+    return diffused_matrix
 
 # Initializes dictionaries to store different types of simulation data
 results = {}

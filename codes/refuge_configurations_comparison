@@ -15,19 +15,19 @@ data_cases = {
         'around': [1, 3, 3, 4, 9],
         'block': [3, 4, 4, 4, 4],
         'stripe': [3, 3, 4, 5, 6],
-        'random': [3, 3, 3, 4, 4]
+        'random': [3, 3, 4, 4, 5]
     },
     'Case II: Complete resistance – high fitness costs': {
         'around': [1, 3, 3, 4, 10],
         'block': [3, 4, 4, 4, 4],
         'stripe': [3, 3, 4, 5, 9],
-        'random': [3, 3, 4, 4, 5]
+        'random': [3, 3, 4, 5, 6]
     },
     'Case III: Incomplete resistant': {
         'around': [1, 3, 4, 0, 0],
-        'block': [3, 5, 5, 0, 0],
+        'block': [4, 5, 6, 0, 0],
         'stripe': [3, 4, 5, 6, 9],
-        'random': [3, 4, 4, 4, 5]
+        'random': [3, 4, 4, 5, 6]
     }
 }
 
@@ -75,7 +75,7 @@ axes[-1].legend(handles, labels, loc='upper left', fontsize=17, frameon=True)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Save the figure to the Downloads folder
-download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'comparing_refuge_configurations_three_cases_t1.png')
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'refuge_configurations_comparison_m1.png')
 plt.savefig(download_path, dpi=300, bbox_inches='tight')
 
 plt.show()
@@ -95,21 +95,21 @@ theta_values_other = [0.12, 0.29, 0.47, 0.69, 1.0]
 data_cases = {
     'Case I: Complete resistance – low fitness costs': {
         'around': [3, 3, 4, 5, 9],
-        'block': [3, 3, 4, 4, 6],
-        'stripe': [3, 14, 28, 0, 0],
-        'random': [4, 8, 14, 29, 0]
+        'block': [3, 4, 4, 4, 9],
+        'stripe': [3, 6, 28, 0, 0],
+        'random': [4, 8, 15, 47, 0]
     },
     'Case II: Complete resistance – high fitness costs': {
         'around': [3, 3, 4, 5, 10],
-        'block': [3, 3, 4, 4, 6],
-        'stripe': [3, 15, 34, 0, 0],
-        'random': [4, 8, 15, 35, 0]
+        'block': [3, 4, 4, 4, 9],
+        'stripe': [3, 6, 33, 0, 0],
+        'random': [4, 8, 16, 0, 0]
     },
     'Case III: Incomplete resistant': {
         'around':  [3, 4, 11, 0, 0],
-        'block': [4, 4, 5, 0, 0],
-        'stripe': [4, 29, 0, 0, 0],
-        'random': [4, 13, 28, 0, 0]
+        'block': [4, 4, 8, 0, 0],
+        'stripe': [4, 19, 0, 0, 0],
+        'random': [5, 13, 29, 0, 0]
     }
 }
 
@@ -140,7 +140,7 @@ for ax, (case, data) in zip(axes, data_cases.items()):
     
     ax.set_title(case, fontsize=15, fontweight='bold')
     ax.set_xlim(0, 1.01)
-    ax.set_ylim(0, 36)
+    ax.set_ylim(0, 48)
     ax.tick_params(axis='x', labelsize=16)
     ax.tick_params(axis='y', labelsize=16)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
@@ -148,7 +148,7 @@ for ax, (case, data) in zip(axes, data_cases.items()):
 
 # General graph settings
 fig.supxlabel(r"Ratio between non-transgenic area and transgenic area $\left(\theta = \frac{N_2}{N_1}\right)$", fontsize=25, fontweight='bold')
-fig.supylabel("Generations", fontsize=25, fontweight='bold')
+fig.supylabel("Generations", fontsize=25, fontweight='bold', x=0.01)
 
 handles, labels = axes[-1].get_legend_handles_labels()
 axes[-1].legend(handles, labels, loc='upper right', fontsize=17, frameon=True)
@@ -156,7 +156,7 @@ axes[-1].legend(handles, labels, loc='upper right', fontsize=17, frameon=True)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Save the figure to the Downloads folder
-download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'refuge_configurations_comparison_m2.png')
+download_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'refuge_configurations_comparison_m5.png')
 plt.savefig(download_path, dpi=300, bbox_inches='tight')
 
 plt.show()
@@ -164,7 +164,6 @@ plt.show()
 ##########################################################################################################################
 ########################################### TEN MOVEMENT AND REACTION ###################################################
 ##########################################################################################################################
-
 import os
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -176,22 +175,22 @@ theta_values_other = [0.12, 0.29, 0.47, 0.69, 1.0]
 # Cases
 data_cases = {
     'Case I: Complete resistance – low fitness costs': {
-        'around': [3, 4, 4, 5, 9],
-        'block': [3, 3, 4, 4, 7],
-        'stripe': [4, 15, 0, 0, 0],
-        'random': [5, 11, 30, 0, 0]
+        'around': [3, 4, 4, 5, 10],
+        'block': [3, 3, 4, 4, 8],
+        'stripe': [4, 7, 0, 0, 0],
+        'random': [6, 12, 27, 0, 0]
     },
     'Case II: Complete resistance – high fitness costs': {
         'around': [3, 4, 4, 5, 10],
-        'block': [3, 3, 4, 4, 7],
-        'stripe': [4, 17, 0, 0, 0],
-        'random': [4, 11, 34, 0, 0]
+        'block': [3, 3, 4, 4, 9],
+        'stripe': [4, 7, 0, 0, 0],
+        'random': [6, 12, 31, 0, 0]
     },
     'Case III: Incomplete resistant': {
-        'around': [4, 5, 11, 39, 0],
-        'block': [3, 4, 5, 0, 0],
-        'stripe': [6, 29, 0, 0, 0],
-        'random': [6, 19, 0, 0, 0]
+        'around': [4, 5, 12, 45, 0],
+        'block': [4, 4, 9, 0, 0],
+        'stripe': [5, 16, 0, 0, 0],
+        'random': [7, 21, 0, 0, 0]
     }
 }
 
@@ -222,7 +221,7 @@ for ax, (case, data) in zip(axes, data_cases.items()):
     
     ax.set_title(case, fontsize=15, fontweight='bold')
     ax.set_xlim(0, 1.01)
-    ax.set_ylim(0, 40)
+    ax.set_ylim(0, 46)
     ax.tick_params(axis='x', labelsize=16)
     ax.tick_params(axis='y', labelsize=16)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
@@ -230,7 +229,7 @@ for ax, (case, data) in zip(axes, data_cases.items()):
 
 # General graph settings
 fig.supxlabel(r"Ratio between non-transgenic area and transgenic area $\left(\theta = \frac{N_2}{N_1}\right)$", fontsize=25, fontweight='bold')
-fig.supylabel("Generations", fontsize=25, fontweight='bold')
+fig.supylabel("Generations", fontsize=25, fontweight='bold', x=0.01)
 
 handles, labels = axes[-1].get_legend_handles_labels()
 axes[-1].legend(handles, labels, loc='lower right', fontsize=17, frameon=True)
