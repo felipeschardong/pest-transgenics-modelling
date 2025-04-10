@@ -9,4 +9,4 @@
 
 | Stripe Refuge | Random Refuge |
 |-------------------|-------------------|
-| ![Animação faixas](animations/animation_stripes.gif) | ![Animação aleatório](animations/animation_random.gif) |
+| ![Animação faixas](animations/animation_strip.gif) | ![Animação aleatório](animations/animation_random.gif) |
