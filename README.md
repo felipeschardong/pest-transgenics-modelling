@@ -8,5 +8,5 @@
 | ![Animação torno](animations/animation_around.gif) | ![Animação bloco](animations/animation_block.gif) |
 
 | Stripe Refuge | Random Refuge |
-|-------------------|-------------------|
+|------------------|-------------------|
 | ![Animação faixas](animations/animation_strip.gif) | ![Animação aleatório](animations/animation_random.gif) |
