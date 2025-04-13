@@ -19,8 +19,8 @@ In the full study, we analyzed five different refuge proportions for each config
 ##  Spatial Dynamics Over Time
 
 The percentages of refuge shown in the animations below correspond to a **single representative case** for each configuration:
-> - Around: 22%.
-> - Block, Stripe, Random: 23%.
+- Around: 22%.
+- Block, Stripe, Random: 23%.
 
 
 | Around Refuge | Block Refuge |
