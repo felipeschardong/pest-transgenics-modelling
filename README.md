@@ -1,6 +1,26 @@
 # Pest Transgenics Modelling
- 
- ## Spatial distribution of genotypes over time for different refuge configurations. Considering 22% refuge in the around configuration and 23% in the other three configurations.
+
+This repository contains spatially explicit models to study the evolution of resistance in pest populations exposed to transgenic crops. We analyze how different spatial refuge configurations affect the dynamics of susceptible, heterozygous, and resistant genotypes over time.
+
+---
+ ## Refuge Configurations
+
+We consider four spatial configurations of refuge areas:
+
+- **Around configuration**
+- **Block configuration**
+- **Stripe configuration**
+- **Random configuration**
+
+In the full study, we analyzed five different refuge proportions for each configuration to assess how refuge size influences resistance dynamics.
+
+---
+
+##  Spatial Dynamics Over Time
+
+The percentages of refuge shown in the animations below correspond to a **single representative case** for each configuration:
+> - Around: 22%.
+> - Block, Stripe, Random: 23%.
 
 
 | Around Refuge | Block Refuge |
@@ -10,6 +30,8 @@
 | Stripe Refuge | Random Refuge |
 |------------------|-------------------|
 | ![Animação faixas](animations/animation_stripe.gif) | ![Animação aleatório](animations/animation_random.gif) |
+
+---
 
 ## About the Simulations
 
@@ -46,5 +68,10 @@ Other scripts in the repository explore complementary aspects:
 - [`cobwebbing-method`](codes/cobwebbing-method)  
   Cobwebbing methods for phase-space visualization.
 
+- [`refuge_configurations_comparison`](codes/refuge_configurations_comparison)  
+  Comparisons between refuge configurations.
+
 - [`general_refuge_configurations_comparision`](codes/general_refuge_configurations_comparision)  
   General comparisons between refuge configurations.
+
+
