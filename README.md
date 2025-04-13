@@ -14,24 +14,28 @@
 ## About the Simulations
 
 Each script under the [`codes/`](codes/) folder corresponds to a different aspect of the project.
-The `movement_reaction_*` scripts are organized into **three stages**:
+
+The following scripts focus on spatial simulations with genotype dynamics:
+
+- [`movement_reaction_around_configuration`](codes/movement_reaction_around_configuration)  
+- [`movement_reaction_block_configuration`](codes/movement_reaction_block_configuration)  
+- [`movement_reaction_stripes_configuration`](codes/movement_reaction_stripes_configuration)  
+- [`movement_reaction_random_configuration`](codes/movement_reaction_random_configuration)  
+
+Each of these scripts is organized into **three stages**:
 
 ### 1. Genotype Frequency Plots  
-Plots showing the evolution of genotype frequencies over generations for each refuge configuration:
-
-- [`movement_reaction_around_configuration`](codes/movement_reaction_around_configuration)
-- [`movement_reaction_block_configuration`](codes/movement_reaction_block_configuration)
-- [`movement_reaction_stripes_configuration`](codes/movement_reaction_stripes_configuration)
-- [`movement_reaction_random_configuration`](codes/movement_reaction_random_configuration)
+Plots showing the evolution of genotype frequencies over generations for the corresponding refuge configuration.
 
 ### 2. Spatial Distribution Snapshots  
-Visualizations of the spatial arrangement of genotypes at a selected generation for each configuration.
+Visualizations of the spatial arrangement of genotypes at a selected generation.
 
 ### 3. Animations  
-Animations displaying the spatial dynamics over 50 generations (see [`animations/`](animations/)).
+Animations displaying the spatial dynamics over 50 generations.
 
+---
 
-Other scripts in the repository explore additional aspects:
+Other scripts in the repository explore complementary aspects:
 
 - [`resistant_allele_frequency_critical_time`](codes/resistant_allele_frequency_critical_time)  
   Time for the resistant allele to reach 50% frequency.
