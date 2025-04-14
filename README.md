@@ -49,7 +49,7 @@ Each of these scripts is organized into **three stages**:
 ### 1. Genotype Frequency Plots  
 Plots showing the evolution of genotype frequencies over generations for the corresponding refuge configuration.
 
-### 2. Spatial Distribution Snapshots  
+### 2. Spatial Distribution   
 Visualizations of the spatial arrangement of genotypes at a selected generation.
 
 ### 3. Animations  
